@@ -4,7 +4,7 @@ const args = require('minimist')(process.argv.slice(2))
 
 args['port']
 
-const port = 5000
+const port = args.port || process.env.port || 5000
 
 const express = require('express')
 
@@ -60,6 +60,8 @@ function flipACoin(call) {
 
 //a02 functions end
 
+//app endpoints start
+
 app.get('/app/flip/call/tails', (req, res) => {
     const resultFlip = flipACoin('tails')
     res.status(200).json({ 'call' : resultFlip.call, 'flip': resultFlip.flip, 'result': resultFlip.result})
@@ -90,7 +92,8 @@ app.use(function(req, res) {
     res.status(404).send('404 NOT FOUND')
 })
 
+//app listening
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
+    console.log('App listening on port %PORT%'.replace('%PORT%', port))
 })
 
